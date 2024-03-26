@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const { Resend } = require('resend');
 const path = require('path');
 
 const app = express();
@@ -22,9 +23,23 @@ app.use((req, res, next) => {
 });
 
 // Ruta para manejar el envío de correo electrónico desde el formulario
-app.post('/send-email', (req, res) => {
-  // Simplemente devuelve los datos recibidos en la solicitud
-  res.json(req.body);
+app.post('/send-email', async (req, res) => {
+  const { name, email, message } = req.body;
+
+  try {
+    // Aquí puedes realizar cualquier acción con los datos recibidos,
+    // como enviar un correo electrónico, guardarlos en una base de datos, etc.
+    
+    // Por ejemplo, puedes simplemente imprimir los datos recibidos en la consola del servidor:
+    console.log('Datos recibidos:', { name, email, message });
+
+    // Luego, puedes enviar una respuesta al cliente indicando que los datos han sido recibidos con éxito.
+    res.status(200).send('Datos recibidos correctamente');
+  } catch (error) {
+    console.error('Error al procesar los datos:', error);
+    // En caso de algún error, puedes enviar una respuesta de error al cliente.
+    res.status(500).send('Error al procesar los datos');
+  }
 });
 
 // Servir los archivos estáticos de la aplicación React
