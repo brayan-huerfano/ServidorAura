@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const Resend = require('resend').default; // Importa correctamente el módulo resend
+const resend = require('resend'); // Importa el objeto resend directamente
 const path = require('path');
 
 const app = express();
@@ -22,15 +22,12 @@ app.use((req, res, next) => {
   }
 });
 
-// Configurar instancia de Resend
-const resend = new Resend('re_PRDQm19G_DR8gN5EiQQ2dLB5rzvULjqjn');
-
 // Ruta para manejar el envío de correo electrónico desde el formulario
 app.post('/send-email', async (req, res) => {
   const { name, email, message } = req.body;
 
   try {
-    const { data, error } = await resend.emails.send({
+    const { data, error } = await resend.emails.send({ // Utiliza resend.emails.send directamente
       from: 'onboarding@resend.dev',
       to: "desarrolladorbrayancardona@gmail.com",
       subject: 'Mensaje de contacto',
