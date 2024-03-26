@@ -1,6 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const resend = require('resend'); // Importa el objeto resend directamente
 const path = require('path');
 
 const app = express();
@@ -23,28 +22,9 @@ app.use((req, res, next) => {
 });
 
 // Ruta para manejar el envío de correo electrónico desde el formulario
-app.post('/send-email', async (req, res) => {
-  const { name, email, message } = req.body;
-
-  try {
-    const { data, error } = await resend.emails.send({ // Utiliza resend.emails.send directamente
-      from: 'onboarding@resend.dev',
-      to: "desarrolladorbrayancardona@gmail.com",
-      subject: 'Mensaje de contacto',
-      html: `<p>Nombre: ${name}</p><p>Correo electrónico: ${email}</p><p>Mensaje: ${message}</p>`,
-    });
-
-    if (error) {
-      console.error('Error al enviar el correo:', error);
-      return res.status(500).send('Error al enviar el correo');
-    }
-
-    console.log('Email enviado:', data);
-    res.status(200).send('Email enviado correctamente');
-  } catch (error) {
-    console.error('Error al enviar el correo:', error);
-    res.status(500).send('Error al enviar el correo');
-  }
+app.post('/send-email', (req, res) => {
+  // Simplemente devuelve los datos recibidos en la solicitud
+  res.json(req.body);
 });
 
 // Servir los archivos estáticos de la aplicación React
