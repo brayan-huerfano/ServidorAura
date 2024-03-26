@@ -1,3 +1,4 @@
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const { Resend } = require('resend');
@@ -22,23 +23,31 @@ app.use((req, res, next) => {
   }
 });
 
+// Configurar instancia de Resend
+const resend = new Resend('re_PRDQm19G_DR8gN5EiQQ2dLB5rzvULjqjn');
+
 // Ruta para manejar el envío de correo electrónico desde el formulario
 app.post('/send-email', async (req, res) => {
   const { name, email, message } = req.body;
 
   try {
-    // Aquí puedes realizar cualquier acción con los datos recibidos,
-    // como enviar un correo electrónico, guardarlos en una base de datos, etc.
-    
-    // Por ejemplo, puedes simplemente imprimir los datos recibidos en la consola del servidor:
-    console.log('Datos recibidos:', { name, email, message });
+    const { data, error } = await resend.emails.send({
+      from: 'onboarding@resend.dev',
+      to: "desarrolladorbrayancardona@gmail.com",
+      subject: 'Mensaje de contacto',
+      html: `<p>Nombre: ${name}</p><p>Correo electrónico: ${email}</p><p>Mensaje: ${message}</p>`,
+    });
 
-    // Luego, puedes enviar una respuesta al cliente indicando que los datos han sido recibidos con éxito.
-    res.status(200).send('Datos recibidos correctamente');
+    if (error) {
+      console.error('Error al enviar el correo:', error);
+      return res.status(500).send('Error al enviar el correo');
+    }
+
+    console.log('Email enviado:', data);
+    res.status(200).send('Email enviado correctamente');
   } catch (error) {
-    console.error('Error al procesar los datos:', error);
-    // En caso de algún error, puedes enviar una respuesta de error al cliente.
-    res.status(500).send('Error al procesar los datos');
+    console.error('Error al enviar el correo:', error);
+    res.status(500).send('Error al enviar el correo');
   }
 });
 
