@@ -1,4 +1,3 @@
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const { Resend } = require('resend');
@@ -16,11 +15,7 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
-  if (req.method === 'OPTIONS') {
-    res.sendStatus(200);
-  } else {
-    next();
-  }
+  next();
 });
 
 // Configurar instancia de Resend
@@ -49,10 +44,6 @@ app.post('/send-email', async (req, res) => {
     console.error('Error al enviar el correo:', error);
     res.status(500).send('Error al enviar el correo');
   }
-});
-// Manejar solicitudes OPTIONS para la ruta '/send-email'
-app.options('/send-email', (req, res) => {
-  res.sendStatus(200);
 });
 
 // Servir los archivos estáticos de la aplicación React
