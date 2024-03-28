@@ -50,6 +50,10 @@ app.post('/send-email', async (req, res) => {
     res.status(500).send('Error al enviar el correo');
   }
 });
+// Manejar solicitudes OPTIONS para la ruta '/send-email'
+app.options('/send-email', (req, res) => {
+  res.sendStatus(200);
+});
 
 // Servir los archivos estáticos de la aplicación React
 app.use(express.static(path.join(__dirname, 'build')));
