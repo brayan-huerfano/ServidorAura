@@ -54,6 +54,11 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
+// Manejar cualquier solicitud que no haya sido manejada hasta ahora
+app.use((req, res) => {
+  res.status(404).send('Recurso no encontrado');
+});
+
 // Iniciar el servidor
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en el puerto ${PORT}`);
